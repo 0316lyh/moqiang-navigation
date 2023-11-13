@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 /**
  * (Type)表服务实现类
@@ -35,8 +36,8 @@ public class TypeServiceImpl implements TypeService {
     /**
      * 分页查询
      *
-     * @param type 筛选条件
-     * @param pageRequest      分页对象
+     * @param type        筛选条件
+     * @param pageRequest 分页对象
      * @return 查询结果
      */
     @Override
@@ -78,5 +79,11 @@ public class TypeServiceImpl implements TypeService {
     @Override
     public boolean deleteById(Integer id) {
         return this.typeDao.deleteById(id) > 0;
+    }
+
+    @Override
+    public List<Type> getAll() {
+        List<Type> types = typeDao.selectByMap(null);
+        return types;
     }
 }

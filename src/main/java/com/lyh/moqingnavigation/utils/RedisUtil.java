@@ -16,4 +16,20 @@ import javax.annotation.Resource;
 public class RedisUtil {
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+
+    public void set(String key, String value) {
+        stringRedisTemplate.opsForValue().set(key, value);
+    }
+
+    public String get(String key) {
+        return stringRedisTemplate.opsForValue().get(key);
+    }
+
+    public void delete(String key) {
+        stringRedisTemplate.delete(key);
+    }
+
+    public void setWithTTL(String key, String value, long time) {
+        stringRedisTemplate.opsForValue().set(key, value, time);
+    }
 }

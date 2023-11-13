@@ -7,15 +7,28 @@
         <result property="name" column="name" jdbcType="VARCHAR"/>
         <result property="typeId" column="type_id" jdbcType="INTEGER"/>
         <result property="icon" column="icon" jdbcType="VARCHAR"/>
+        <result property="content" column="content" jdbcType="VARCHAR"/>
         <result property="url" column="url" jdbcType="VARCHAR"/>
         <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
         <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <result property="recommended" column="Recommended" jdbcType="INTEGER"/>
+        <result property="topType" column="top_type" jdbcType="VARCHAR"/>
+        <result property="liked" column="liked" jdbcType="INTEGER"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="WebsiteMap">
-        select
-          id, name, type_id, icon, url, create_time, update_time
+        select id,
+               name,
+               type_id,
+               icon,
+               content,
+               url,
+               create_time,
+               update_time,
+               Recommended,
+               top_type,
+               liked
         from website
         where id = #{id}
     </select>
@@ -23,7 +36,7 @@
     <!--查询指定行数据-->
     <select id="queryAllByLimit" resultMap="WebsiteMap">
         select
-          id, name, type_id, icon, url, create_time, update_time
+        id, name, type_id, icon, content, url, create_time, update_time, Recommended, top_type, liked
         from website
         <where>
             <if test="id != null">
@@ -38,6 +51,9 @@
             <if test="icon != null and icon != ''">
                 and icon = #{icon}
             </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
             <if test="url != null and url != ''">
                 and url = #{url}
             </if>
@@ -46,6 +62,15 @@
             </if>
             <if test="updateTime != null">
                 and update_time = #{updateTime}
+            </if>
+            <if test="recommended != null">
+                and Recommended = #{recommended}
+            </if>
+            <if test="topType != null and topType != ''">
+                and top_type = #{topType}
+            </if>
+            <if test="liked != null">
+                and liked = #{liked}
             </if>
         </where>
         limit #{pageable.offset}, #{pageable.pageSize}
@@ -68,6 +93,9 @@
             <if test="icon != null and icon != ''">
                 and icon = #{icon}
             </if>
+            <if test="content != null and content != ''">
+                and content = #{content}
+            </if>
             <if test="url != null and url != ''">
                 and url = #{url}
             </if>
@@ -77,36 +105,52 @@
             <if test="updateTime != null">
                 and update_time = #{updateTime}
             </if>
+            <if test="recommended != null">
+                and Recommended = #{recommended}
+            </if>
+            <if test="topType != null and topType != ''">
+                and top_type = #{topType}
+            </if>
+            <if test="liked != null">
+                and liked = #{liked}
+            </if>
         </where>
     </select>
 
     <!--新增所有列-->
     <insert id="insert" keyProperty="id" useGeneratedKeys="true">
-        insert into website(name, type_id, icon, url, create_time, update_time)
-        values (#{name}, #{typeId}, #{icon}, #{url}, #{createTime}, #{updateTime})
+        insert into website(name, type_id, icon, content, url, create_time, update_time, Recommended, top_type, liked)
+        values (#{name}, #{typeId}, #{icon}, #{content}, #{url}, #{createTime}, #{updateTime}, #{recommended},
+                #{topType}, #{liked})
     </insert>
 
     <insert id="insertBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into website(name, type_id, icon, url, create_time, update_time)
+        insert into website(name, type_id, icon, content, url, create_time, update_time, Recommended, top_type, liked)
         values
         <foreach collection="entities" item="entity" separator=",">
-        (#{entity.name}, #{entity.typeId}, #{entity.icon}, #{entity.url}, #{entity.createTime}, #{entity.updateTime})
+            (#{entity.name}, #{entity.typeId}, #{entity.icon}, #{entity.content}, #{entity.url}, #{entity.createTime},
+            #{entity.updateTime}, #{entity.recommended}, #{entity.topType}, #{entity.liked})
         </foreach>
     </insert>
 
     <insert id="insertOrUpdateBatch" keyProperty="id" useGeneratedKeys="true">
-        insert into website(name, type_id, icon, url, create_time, update_time)
+        insert into website(name, type_id, icon, content, url, create_time, update_time, Recommended, top_type, liked)
         values
         <foreach collection="entities" item="entity" separator=",">
-            (#{entity.name}, #{entity.typeId}, #{entity.icon}, #{entity.url}, #{entity.createTime}, #{entity.updateTime})
+            (#{entity.name}, #{entity.typeId}, #{entity.icon}, #{entity.content}, #{entity.url}, #{entity.createTime},
+            #{entity.updateTime}, #{entity.recommended}, #{entity.topType}, #{entity.liked})
         </foreach>
         on duplicate key update
         name = values(name),
         type_id = values(type_id),
         icon = values(icon),
+        content = values(content),
         url = values(url),
         create_time = values(create_time),
-        update_time = values(update_time)
+        update_time = values(update_time),
+        Recommended = values(Recommended),
+        top_type = values(top_type),
+        liked = values(liked)
     </insert>
 
     <!--通过主键修改数据-->
@@ -122,6 +166,9 @@
             <if test="icon != null and icon != ''">
                 icon = #{icon},
             </if>
+            <if test="content != null and content != ''">
+                content = #{content},
+            </if>
             <if test="url != null and url != ''">
                 url = #{url},
             </if>
@@ -131,14 +178,53 @@
             <if test="updateTime != null">
                 update_time = #{updateTime},
             </if>
+            <if test="recommended != null">
+                Recommended = #{recommended},
+            </if>
+            <if test="topType != null and topType != ''">
+                top_type = #{topType},
+            </if>
+            <if test="liked != null">
+                liked = #{liked},
+            </if>
         </set>
         where id = #{id}
     </update>
 
     <!--通过主键删除-->
     <delete id="deleteById">
-        delete from website where id = #{id}
+        delete
+        from website
+        where id = #{id}
     </delete>
 
+    <!--按类型查询网站-->
+    <select id="selectByTypeId" resultType="com.lyh.moqingnavigation.entity.po.Website">
+        select *
+        from website
+        where type_id = #{typeId}
+    </select>
+
+    <!--查看被推荐的网站-->
+    <select id="selectRecommended" resultType="com.lyh.moqingnavigation.entity.po.Website">
+        select *
+        from website
+        where Recommended = 1
+    </select>
+
+    <!--根据一级分类查网站-->
+    <select id="getByTopType" resultType="com.lyh.moqingnavigation.entity.po.Website">
+        select *
+        from website
+        where top_type = #{topType}
+    </select>
+
+    <!--取点在数据表中排名靠前的前num个网站-->
+    <select id="getTopByLiked" resultType="com.lyh.moqingnavigation.entity.po.Website">
+        select *
+        from website
+        order by liked desc
+        limit #{num}
+    </select>
 </mapper>
 

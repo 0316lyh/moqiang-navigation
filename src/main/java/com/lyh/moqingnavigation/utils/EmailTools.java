@@ -16,8 +16,8 @@ public class EmailTools {
     private static final String SMTP_HOST = "smtp.qcloudmail.com";
     private static final String SMTP_PORT = "465";
     // 发件人的账号
-    private static final String fromAddress = "fromAddress";
-    private static final String password = "password";
+    private static final String fromAddress = "lyh2042971411@jiaotailang.asia";
+    private static final String password = "2042971411QWer";
     // 发件人名字
     private static final String fromName = "MoQiangNav";
     private static final String title = "验证码";

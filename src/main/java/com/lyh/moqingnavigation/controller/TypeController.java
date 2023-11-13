@@ -6,10 +6,13 @@ import com.lyh.moqingnavigation.controller.result.Result;
 import com.lyh.moqingnavigation.entity.po.Type;
 import com.lyh.moqingnavigation.service.TypeService;
 import com.lyh.moqingnavigation.utils.CheckLogin;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 /**
  * (Type)表控制层
@@ -20,6 +23,7 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("type")
 public class TypeController {
+    private static final Logger logger = LoggerFactory.getLogger(TypeController.class);
     /**
      * 服务对象
      */
@@ -27,29 +31,17 @@ public class TypeController {
     private TypeService typeService;
 
     /**
-     * 分页查询
+     * 获取所有type
      *
-     * @param type        筛选条件
-     * @param pageRequest 分页对象
-     * @return 查询结果
+     * @param session
+     * @return
      */
     @GetMapping
-    public Result queryByPage(HttpSession session) {
-        CheckLogin.checkLogin(session);
-        System.out.println(111);
-        return new Result(200, null, "请求成功");
+    public Result getAll(HttpSession session) {
+        List<Type> types = typeService.getAll();
+        return new Result(Code.GET_OK, types, CodeInfoEnums.GET_OK.getMsg());
     }
 
-    /**
-     * 通过主键查询单条数据
-     *
-     * @param id 主键
-     * @return 单条数据
-     */
-    @GetMapping("{id}")
-    public Result queryById(@PathVariable("id") Integer id) {
-        return new Result(Code.GET_OK, "hello", CodeInfoEnums.GET_OK.getMsg());
-    }
 
     /**
      * 新增数据
@@ -82,6 +74,18 @@ public class TypeController {
     @DeleteMapping
     public Result deleteById(Integer id) {
         return null;
+    }
+
+    /**
+     * 分页查询
+     *
+     * @return 查询结果
+     */
+    @GetMapping("test")
+    public Result queryByPage(HttpSession session) {
+        CheckLogin.checkLogin(session);
+        System.out.println(111);
+        return new Result(200, null, "请求成功");
     }
 
 }

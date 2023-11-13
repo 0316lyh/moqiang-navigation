@@ -1,11 +1,11 @@
-package com.lyh.moqingnavigation.entity.po;
+package com.lyh.moqingnavigation.entity.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-import java.util.Date;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * (Website)实体类
@@ -16,8 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Website implements Serializable {
-    private static final long serialVersionUID = 741488852457114482L;
+public class WebsiteDTO implements Serializable {
     /**
      * 自增id
      */
@@ -42,14 +41,6 @@ public class Website implements Serializable {
      * 网站url
      */
     private String url;
-    /**
-     * 创建时间
-     */
-    private Date createTime;
-    /**
-     * 修改时间
-     */
-    private Date updateTime;
 
     /**
      * 是否被推荐，0否，1是
@@ -136,22 +127,6 @@ public class Website implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
-    }
-
-    public Date getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
-
-    public Date getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
     }
 
 }

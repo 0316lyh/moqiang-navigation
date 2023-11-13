@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lyh.moqingnavigation.entity.po.Website;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -16,6 +18,7 @@ import java.util.List;
  */
 @Mapper
 public interface WebsiteDao extends BaseMapper<Website> {
+
 
     /**
      * 通过ID查询单条数据
@@ -82,6 +85,45 @@ public interface WebsiteDao extends BaseMapper<Website> {
      * @return 影响行数
      */
     int deleteById(Integer id);
+
+    /**
+     * 根据typeId查询网站
+     *
+     * @param typeId
+     * @return
+     */
+    List<Website> selectByTypeId(@Param("typeId") Integer typeId);
+
+    /**
+     * 查询推荐网站
+     *
+     * @return List<Website>
+     */
+    List<Website> selectRecommended();
+
+    /**
+     * 根据一级分类查网站
+     *
+     * @return
+     */
+    List<Website> getByTopType(@Param("topType") String topType);
+
+    /**
+     * 增加点赞数
+     *
+     * @param id
+     * @return
+     */
+    @Update("update website set liked = liked + 1 where id = #{id}")
+    Integer addLiked(@Param("id") Integer id);
+
+    /**
+     * 根据已喜欢的网站数量，获取前几个最常访问的网站列表
+     *
+     * @param num 获取的网站数量
+     * @return 前几个最常访问的网站列表
+     */
+    List<Website> getTopByLiked(Integer num);
 
 }
 

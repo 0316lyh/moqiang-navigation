@@ -5,6 +5,8 @@ import com.lyh.moqingnavigation.controller.result.CodeInfoEnums;
 import com.lyh.moqingnavigation.controller.result.Result;
 import com.lyh.moqingnavigation.entity.po.User;
 import com.lyh.moqingnavigation.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +21,7 @@ import javax.annotation.Resource;
 @RestController
 @RequestMapping("user")
 public class UserController {
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
     /**
      * 服务对象
      */
